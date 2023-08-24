@@ -80,8 +80,6 @@ def main():
 
     total = 0
 
-    print("\tID", "Name", "Value", "Rate", sep=", ")
-
     id_to_name = get_id_to_name()
     peteryr_sanvals = get_sanval_map()
 
@@ -99,8 +97,29 @@ def main():
         sanval = peteryr_sanvals.get(name, 0)
         peteryr_sanvals["mh_gacha"] += sanval * rate
 
+    # points per event item
+    mh_item_values = {
+        "act24side_melding_1": 2,
+        "act24side_melding_2": 3,
+        "act24side_melding_3": 5,
+        "act24side_melding_4": 10,
+        "act24side_melding_5": 20,
+    }
+
+    # add event items to both maps
+    mh_gacha_value = peteryr_sanvals["mh_gacha"]
+    for item_id in mh_item_values:
+        id_to_name[item_id] = item_id
+
+        # infinite gacha takes 40 points
+        item_value = mh_item_values[item_id] * mh_gacha_value / 40
+        peteryr_sanvals[item_id] = item_value
+
+        print(item_id, mh_item_values[item_id], item_value)
+
     #############################################
 
+    print("\tID", "Name", "Value", "Rate", sep=", ")
     for id, rate in rates.items():
         name = id_to_name.get(id, None)
         sanval = peteryr_sanvals.get(name, 0)
