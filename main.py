@@ -36,21 +36,25 @@ for op_class in [
         NAME_OVERRIDES[f"{op_class} {chip_type}"] = f"{tier} Chip"
 
 
-# itemId to sanval table name map
-game_data: dict = requests.get(GAME_DATA_URL).json()["items"]
-id_to_name: dict[str, str] = {}  # will include non-official names
-for id, data in game_data.items():
-    name = data["name"]
-    id_to_name[data["itemId"]] = NAME_OVERRIDES.get(name, name)
+def get_id_to_name() -> dict[str, str]:
+    """Load map of itemId (from game data) to item name (for sanval map)"""
+    game_data: dict = requests.get(GAME_DATA_URL).json()["items"]
+    id_to_name: dict[str, str] = {}  # will include non-official names
+    for id, data in game_data.items():
+        name = data["name"]
+        id_to_name[data["itemId"]] = NAME_OVERRIDES.get(name, name)
+    return id_to_name
 
 
-# load sanity values map
-peteryr_df = pd.read_csv(PETERYR_URL, header=None, names=["en_name", "sanval"])
-peteryr_sanvals = {}
-for _, row in peteryr_df.iterrows():
-    en_name = row["en_name"]
-    sanval = row["sanval"]
-    peteryr_sanvals[en_name] = sanval
+def get_sanval_map() -> dict[str, float]:
+    """Load sanity values map from interface Google Sheet"""
+    peteryr_df = pd.read_csv(PETERYR_URL, header=None, names=["en_name", "sanval"])
+    peteryr_sanvals = {}
+    for _, row in peteryr_df.iterrows():
+        en_name = row["en_name"]
+        sanval = row["sanval"]
+        peteryr_sanvals[en_name] = sanval
+    return peteryr_sanvals
 
 
 def main():
@@ -75,6 +79,9 @@ def main():
     total = 0
 
     print("\tID", "Name", "Value", "Rate", sep=", ")
+
+    peteryr_sanvals = get_sanval_map()
+    id_to_name = get_id_to_name()
 
     for id, rate in rates.items():
         name = id_to_name.get(id, None)
