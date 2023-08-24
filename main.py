@@ -106,7 +106,12 @@ def main():
         "act24side_melding_5": 20,
     }
 
+    print("==== temporary MH collab items ====")
+    print("value of infinite gacha:", peteryr_sanvals["mh_gacha"])
+    print()
+
     # add event items to both maps
+    print("ID", "point_value", "san_value", sep=", ")
     mh_gacha_value = peteryr_sanvals["mh_gacha"]
     for item_id in mh_item_values:
         id_to_name[item_id] = item_id
@@ -116,6 +121,8 @@ def main():
         peteryr_sanvals[item_id] = item_value
 
         print(item_id, mh_item_values[item_id], item_value)
+
+    print("===================================\n")
 
     #############################################
 
