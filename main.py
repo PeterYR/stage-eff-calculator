@@ -15,7 +15,8 @@ NAME_OVERRIDES = {
     "Skill Summary - 2": "Skill Summary 2",
     "Skill Summary - 3": "Skill Summary 3",
 }
-# { actual name : peteryr name }
+# manage name discrepancies with interface spreadsheet
+# { actual name : name on sheet }
 
 SANITY_VALUE_OVERRIDES = {}
 
@@ -41,9 +42,11 @@ for op_class in [
 def get_id_to_name() -> dict[str, str]:
     """Load map of itemId (from game data) to item name (for sanval map)"""
     game_data: dict = requests.get(GAME_DATA_URL).json()["items"]
-    id_to_name: dict[str, str] = {}  # will include non-official names
+    id_to_name: dict[str, str] = {}
     for id, data in game_data.items():
         name = data["name"]
+
+        # use spreadsheet override if found
         id_to_name[data["itemId"]] = NAME_OVERRIDES.get(name, name)
     return id_to_name
 
@@ -61,7 +64,7 @@ def get_sanval_map() -> dict[str, float]:
 
 def main():
     if len(sys.argv) < 3:
-        print(f"Usage: python {sys.argv[0]} <stage_id> <sanity cost> [extra LMD/san]")
+        print(f"Usage: {sys.argv[0]} <stage_id> <sanity cost> [extra LMD/san]")
         sys.exit()
 
     stage_id = sys.argv[1]
@@ -71,9 +74,6 @@ def main():
     if len(sys.argv) >= 4:
         extra_lmd = int(sys.argv[3])
     assert sanity_cost > 0
-
-    # stage_id = "act15side_06"
-    # sancost = 18
 
     pengstats.initialize_matrix()
     rates = pengstats.stage_rates(stage_id)
@@ -135,14 +135,7 @@ def main():
 
     total += (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]
 
-    print("Efficiency:", total / sanity_cost)
-
-    # # print(peteryr_sanvals)
-    # for en_name in peteryr_sanvals["en_name"]:
-    #     if en_name not in id_to_name.values():
-    #         print(en_name)
-    #         ...
-    #         # problematic item name
+    print("Stage efficiency:", total / sanity_cost)
 
 
 if __name__ == "__main__":
