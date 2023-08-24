@@ -17,6 +17,8 @@ NAME_OVERRIDES = {
 }
 # { actual name : peteryr name }
 
+SANITY_VALUE_OVERRIDES = {}
+
 # add overrides for chips
 for op_class in [
     "Vanguard",
@@ -80,8 +82,24 @@ def main():
 
     print("\tID", "Name", "Value", "Rate", sep=", ")
 
-    peteryr_sanvals = get_sanval_map()
     id_to_name = get_id_to_name()
+    peteryr_sanvals = get_sanval_map()
+
+    ######## MH COLLAB TEMPORARY MEASURE ########
+
+    # special 2k LMD "item" on penguin stats
+    id_to_name["4001_2000"] = "2k LMD"
+    peteryr_sanvals["2k LMD"] = peteryr_sanvals["LMD"] * 2000
+
+    # add gacha pull to sanvals map
+    mh_rates = pengstats.stage_rates("act24side_gacha")
+    peteryr_sanvals["mh_gacha"] = 0
+    for id, rate in mh_rates.items():
+        name = id_to_name.get(id, None)
+        sanval = peteryr_sanvals.get(name, 0)
+        peteryr_sanvals["mh_gacha"] += sanval * rate
+
+    #############################################
 
     for id, rate in rates.items():
         name = id_to_name.get(id, None)
