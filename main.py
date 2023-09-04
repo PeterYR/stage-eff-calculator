@@ -120,22 +120,22 @@ def main():
         item_value = mh_item_values[item_id] * mh_gacha_value / 40
         peteryr_sanvals[item_id] = item_value
 
-        print(item_id, mh_item_values[item_id], item_value)
+        print(f"{item_id}, {mh_item_values[item_id]}, {item_value:.4f}")
 
     print("===================================\n")
 
     #############################################
 
-    print("\tID", "Name", "Value", "Rate", sep=", ")
+    print("ID", "Name", "Value", "Rate", sep=", ")
     for id, rate in rates.items():
         name = id_to_name.get(id, None)
         sanval = peteryr_sanvals.get(name, 0)
-        print("\t" + id, name, sanval, rate, sep=", ")
+        print(f"{id}, {name}, {sanval:.4f}, {rate:.4f}")
         total += sanval * rate
 
     total += (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]
 
-    print("Stage efficiency:", total / sanity_cost)
+    print("\nStage efficiency:", total / sanity_cost)
 
 
 if __name__ == "__main__":
