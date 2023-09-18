@@ -78,57 +78,14 @@ def main():
     pengstats.initialize_matrix()
     rates = pengstats.stage_rates(stage_id)
 
-    total = 0
-
     id_to_name = get_id_to_name()
     peteryr_sanvals = get_sanval_map()
 
-    ######## MH COLLAB TEMPORARY MEASURE ########
-
-    # special 2k LMD "item" on penguin stats
-    id_to_name["4001_2000"] = "2k LMD"
-    peteryr_sanvals["2k LMD"] = peteryr_sanvals["LMD"] * 2000
-
-    # add gacha pull to sanvals map
-    mh_rates = pengstats.stage_rates("act24side_gacha")
-    peteryr_sanvals["mh_gacha"] = 0
-    for id, rate in mh_rates.items():
-        name = id_to_name.get(id, None)
-        sanval = peteryr_sanvals.get(name, 0)
-        peteryr_sanvals["mh_gacha"] += sanval * rate
-
-    # points per event item
-    mh_item_values = {
-        "act24side_melding_1": 2,
-        "act24side_melding_2": 3,
-        "act24side_melding_3": 5,
-        "act24side_melding_4": 10,
-        "act24side_melding_5": 20,
-    }
-
-    print("==== temporary MH collab items ====")
-    print("value of infinite gacha:", peteryr_sanvals["mh_gacha"])
-    print()
-
-    # add event items to both maps
-    print("ID", "point_value", "san_value", sep=", ")
-    mh_gacha_value = peteryr_sanvals["mh_gacha"]
-    for item_id in mh_item_values:
-        id_to_name[item_id] = item_id
-
-        # infinite gacha takes 40 points
-        item_value = mh_item_values[item_id] * mh_gacha_value / 40
-        peteryr_sanvals[item_id] = item_value
-
-        print(f"{item_id}, {mh_item_values[item_id]}, {item_value:.4f}")
-
-    print("===================================\n")
-
-    #############################################
-
     print("ID", "Name", "Value", "Rate", sep=", ")
+
+    total = 0
     for id, rate in rates.items():
-        name = id_to_name.get(id, None)
+        name = id_to_name.get(id, "n/a")
         sanval = peteryr_sanvals.get(name, 0)
         print(f"{id}, {name}, {sanval:.4f}, {rate:.4f}")
         total += sanval * rate
