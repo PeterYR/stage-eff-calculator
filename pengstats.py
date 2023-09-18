@@ -12,7 +12,7 @@ PENGUIN_COLUMNS = {
     "quantity": int,
 }
 
-matrix: pd.DataFrame = None
+matrix: pd.DataFrame | None = None
 
 
 def initialize_matrix():
@@ -29,7 +29,7 @@ def initialize_matrix():
     matrix = matrix.astype(PENGUIN_COLUMNS)
 
 
-def stage_rates(stage_id: str) -> pd.DataFrame:
+def stage_rates(stage_id: str) -> dict[str, float]:
     """Get drop data for given stage
 
     `{ stageId : rate }`"""
