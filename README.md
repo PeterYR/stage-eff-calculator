@@ -23,3 +23,9 @@ Example: IS-10 (Il Siracusano) costs 21 sanity, with unlimited 20 LMD offer in s
 ```
 main.py act21side_10 21 20
 ```
+
+## Acknowledgements
+
+- Drop rates provided by [Penguin Statistics](https://penguin-stats.io/)
+- Game data provided by [Kengxxiao's ArknightsGameData repository](https://github.com/Kengxxiao/ArknightsGameData)
+- Sanity values provied by [Moe's Material Farming spreadsheet](https://docs.google.com/spreadsheets/d/12X0uBQaN7MuuMWWDTiUjIni_MOP015GnulggmBJgBaQ)
