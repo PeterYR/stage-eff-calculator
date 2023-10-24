@@ -21,8 +21,9 @@ results = []
 for stage in STAGES:
     print("running w/ stage", stage[0])
     result = main.main(["lmao", stage[1], str(stage[2])])
-    results.append((stage[0], result))
+    results.append((stage[0], result[0], result[1]))
 
-print("stage_num, efficiency")
+print()
+print("stage_num, efficiency, main_drop")
 for result in results:
-    print(f"{result[0]}, {result[1]}")
+    print(f"{result[0]}, {result[1]}, {result[2]}")
