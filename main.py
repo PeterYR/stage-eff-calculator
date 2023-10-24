@@ -62,17 +62,17 @@ def get_sanval_map() -> dict[str, float]:
     return peteryr_sanvals
 
 
-def main():
-    if len(sys.argv) < 3:
-        print(f"Usage: {sys.argv[0]} <stage_id> <sanity cost> [extra LMD/san]")
+def main(argv=sys.argv):
+    if len(argv) < 3:
+        print(f"Usage: {argv[0]} <stage_id> <sanity cost> [extra LMD/san]")
         sys.exit()
 
-    stage_id = sys.argv[1]
-    sanity_cost = int(sys.argv[2])
+    stage_id = argv[1]
+    sanity_cost = int(argv[2])
     extra_lmd = 0
 
-    if len(sys.argv) >= 4:
-        extra_lmd = int(sys.argv[3])
+    if len(argv) >= 4:
+        extra_lmd = int(argv[3])
     assert sanity_cost > 0
 
     pengstats.initialize_matrix()
@@ -84,15 +84,27 @@ def main():
     print("ID", "Name", "Value", "Rate", sep=", ")
 
     total = 0
+    sanvals = []
     for id, rate in rates.items():
         name = id_to_name.get(id, "n/a")
         sanval = peteryr_sanvals.get(name, 0)
         print(f"{id}, {name}, {sanval:.4f}, {rate:.4f}")
         total += sanval * rate
 
+        sanvals.append((name, sanval * rate))
+
     total += (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]
+    sanvals.append(("LMD", (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]))
 
     print("\nStage efficiency:", total / sanity_cost)
+
+    main_drop = max(sanvals, key=lambda x: x[1])
+
+    print()
+    print("3x drop:", main_drop)
+    print("Stage efficiency:", (total + main_drop[1] * 2) / sanity_cost)
+
+    return (total + main_drop[1] * 2) / sanity_cost
 
 
 if __name__ == "__main__":
