@@ -24,6 +24,6 @@ for stage in STAGES:
     results.append((stage[0], result[0], result[1]))
 
 print()
-print("stage_num, efficiency, main_drop")
+print("stage_num, san_val, main_drop")
 for result in results:
-    print(f"{result[0]}, {result[1]}, {result[2]}")
+    print(f"{result[0]}, {result[1]:.4f}, {result[2]}")

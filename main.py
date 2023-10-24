@@ -112,9 +112,9 @@ def main(argv=sys.argv):
 
     print()
     print("3x drop:", main_drop)
-    print("Ch.12 efficiency:", total_ch12 / sanity_cost)
+    print("Ch.12 san. total:", total_ch12)
 
-    return total_ch12 / sanity_cost, main_drop[0]
+    return total_ch12, main_drop[0]
 
 
 if __name__ == "__main__":
