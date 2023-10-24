@@ -85,27 +85,36 @@ def main(argv=sys.argv):
     print("ID", "Name", "Value", "Rate", sep=", ")
 
     total = 0
-    sanvals = []
+    san_contrib: list[tuple[str, float]] = []
     for id, rate in rates.items():
         name = id_to_name.get(id, "n/a")
         sanval = peteryr_sanvals.get(name, 0)
         print(f"{id}, {name}, {sanval:.4f}, {rate:.4f}")
         total += sanval * rate
 
-        sanvals.append((name, sanval * rate))
+        san_contrib.append((name, sanval * rate))
 
     total += (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]
-    sanvals.append(("LMD", (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]))
+    san_contrib.append(("LMD", (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]))
 
     print("\nStage efficiency:", total / sanity_cost)
 
-    main_drop = max(sanvals, key=lambda x: x[1])
+    # guess main drop
+    main_drop = max(san_contrib, key=lambda x: x[1])
+
+    # recalculate efficiency
+    total_ch12 = 0
+    for result in san_contrib:
+        if result[0] == main_drop[0]:
+            total_ch12 += peteryr_sanvals[result[0]] * 3
+        else:
+            total_ch12 += result[1]
 
     print()
     print("3x drop:", main_drop)
-    print("Stage efficiency:", (total + main_drop[1] * 2) / sanity_cost)
+    print("Ch.12 efficiency:", total_ch12 / sanity_cost)
 
-    return (total + main_drop[1] * 2) / sanity_cost, main_drop[0]
+    return total_ch12 / sanity_cost, main_drop[0]
 
 
 if __name__ == "__main__":
