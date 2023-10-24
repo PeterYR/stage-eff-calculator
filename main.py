@@ -75,7 +75,8 @@ def main(argv=sys.argv):
         extra_lmd = int(argv[3])
     assert sanity_cost > 0
 
-    pengstats.initialize_matrix()
+    if pengstats.matrix is None:
+        pengstats.initialize_matrix()
     rates = pengstats.stage_rates(stage_id)
 
     id_to_name = get_id_to_name()
@@ -104,7 +105,7 @@ def main(argv=sys.argv):
     print("3x drop:", main_drop)
     print("Stage efficiency:", (total + main_drop[1] * 2) / sanity_cost)
 
-    return (total + main_drop[1] * 2) / sanity_cost
+    return (total + main_drop[1] * 2) / sanity_cost, main_drop[0]
 
 
 if __name__ == "__main__":
