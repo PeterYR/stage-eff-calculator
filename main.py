@@ -5,7 +5,7 @@ import sys
 import pengstats
 
 PETERYR_URL = "https://docs.google.com/spreadsheets/d/1PPtMMKODlSgosKYefDwiIs68elS_t5SrltvBC2s-YD0/export?gid=0&range=A:B&format=csv"
-GAME_DATA_URL = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/item_table.json"
+GAME_DATA_URL = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/item_table.json"
 
 NAME_OVERRIDES = {
     "Purchase Certificate": "Shop Voucher",
