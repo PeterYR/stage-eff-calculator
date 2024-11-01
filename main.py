@@ -9,7 +9,7 @@ GAME_DATA_URL = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_Y
 
 NAME_OVERRIDES = {
     "Purchase Certificate": "Shop Voucher",
-    "Transmuted Salt Agglomerate": "Aggloromated Salt",
+    # "Transmuted Salt Agglomerate": "Aggloromated Salt",
     "Nucleic Crystal Sinter": "烧结核凝晶",
     "Skill Summary - 1": "Skill Summary 1",
     "Skill Summary - 2": "Skill Summary 2",
@@ -75,8 +75,8 @@ def main():
         extra_lmd = int(sys.argv[3])
     assert sanity_cost > 0
 
-    pengstats.initialize_matrix()
-    rates = pengstats.stage_rates(stage_id)
+    matrix = pengstats.get_matrix()
+    rates = pengstats.stage_rates(stage_id, matrix)
 
     id_to_name = get_id_to_name()
     peteryr_sanvals = get_sanval_map()

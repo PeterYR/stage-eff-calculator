@@ -12,10 +12,8 @@ PENGUIN_COLUMNS = {
     "quantity": int,
 }
 
-matrix: pd.DataFrame | None = None
 
-
-def initialize_matrix():
+def get_matrix():
     """Request and load drop matrix into memory"""
 
     global matrix
@@ -26,10 +24,10 @@ def initialize_matrix():
         columns=PENGUIN_COLUMNS.keys(),
     )
 
-    matrix = matrix.astype(PENGUIN_COLUMNS)
+    return matrix.astype(PENGUIN_COLUMNS)
 
 
-def stage_rates(stage_id: str) -> dict[str, float]:
+def stage_rates(stage_id: str, matrix: pd.DataFrame) -> dict[str, float]:
     """Get drop data for given stage
 
     `{ stageId : rate }`"""
