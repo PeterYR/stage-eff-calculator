@@ -78,8 +78,10 @@ def main():
         "https://penguin-stats.io/PenguinStats/api/v2/stages"
     ).json()
     sancosts = {}
+    stage_names = {}
     for stage in stage_data:
         sancosts[stage["stageId"]] = stage["apCost"]
+        stage_names[stage["stageId"]] = stage["code"]
 
     # print(sancosts)
 
@@ -108,7 +110,7 @@ def main():
         total += (extra_lmd + 12) * sanity_cost * peteryr_sanvals["LMD"]
 
         # print(f"\n{stage} efficiency:", total / sanity_cost)
-        print(f"{stage},{total / sanity_cost:.4f}")
+        print(f"{stage_names[stage]},{total / sanity_cost:.4f}")
 
 
 if __name__ == "__main__":
