@@ -32,8 +32,6 @@ def stage_rates(stage_id: str, matrix: pd.DataFrame) -> dict[str, float]:
 
     `{ stageId : rate }`"""
 
-    assert matrix is not None, "Matrix not initialized"
-
     filtered_matrix = matrix[matrix["stageId"] == stage_id]
     output: dict[str, float] = {}
     for _, row in filtered_matrix.iterrows():
