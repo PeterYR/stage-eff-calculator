@@ -4,39 +4,19 @@ import sys
 
 import pengstats
 
-PETERYR_URL = "https://docs.google.com/spreadsheets/d/1PPtMMKODlSgosKYefDwiIs68elS_t5SrltvBC2s-YD0/export?gid=0&range=A:B&format=csv"
+PETERYR_URL = "https://docs.google.com/spreadsheets/d/1PPtMMKODlSgosKYefDwiIs68elS_t5SrltvBC2s-YD0/export?gid=1142667735&range=A:C&format=csv"
 GAME_DATA_URL = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/item_table.json"
 
-NAME_OVERRIDES = {
-    "Purchase Certificate": "Shop Voucher",
-    # "Transmuted Salt Agglomerate": "Aggloromated Salt",
-    "Nucleic Crystal Sinter": "烧结核凝晶",
-    "Skill Summary - 1": "Skill Summary 1",
-    "Skill Summary - 2": "Skill Summary 2",
-    "Skill Summary - 3": "Skill Summary 3",
-}
 # manage name discrepancies with interface spreadsheet
 # { actual name : name on sheet }
-
-SANITY_VALUE_OVERRIDES = {}
-
-# add overrides for chips
-for op_class in [
-    "Vanguard",
-    "Guard",
-    "Defender",
-    "Sniper",
-    "Caster",
-    "Medic",
-    "Supporter",
-    "Specialist",
-]:
-    for tier, chip_type in [
-        ("T1", "Chip"),
-        ("T2", "Chip Pack"),
-        ("T3", "Dualchip"),
-    ]:
-        NAME_OVERRIDES[f"{op_class} {chip_type}"] = f"{tier} Chip"
+NAME_OVERRIDES = {
+    # "Purchase Certificate": "Shop Voucher",
+    # # "Transmuted Salt Agglomerate": "Aggloromated Salt",
+    # "Nucleic Crystal Sinter": "烧结核凝晶",
+    # "Skill Summary - 1": "Skill Summary 1",
+    # "Skill Summary - 2": "Skill Summary 2",
+    # "Skill Summary - 3": "Skill Summary 3",
+}
 
 
 def get_id_to_name() -> dict[str, str]:
@@ -53,12 +33,14 @@ def get_id_to_name() -> dict[str, str]:
 
 def get_sanval_map() -> dict[str, float]:
     """Load sanity values map from interface Google Sheet"""
-    peteryr_df = pd.read_csv(PETERYR_URL, header=None, names=["en_name", "sanval"])
+    peteryr_df = pd.read_csv(
+        PETERYR_URL,
+        header=0,
+        names=["item_id", "name", "san_val"],
+    )
     peteryr_sanvals = {}
     for _, row in peteryr_df.iterrows():
-        en_name = row["en_name"]
-        sanval = row["sanval"]
-        peteryr_sanvals[en_name] = sanval
+        peteryr_sanvals[row["name"]] = row["san_val"]
     return peteryr_sanvals
 
 
