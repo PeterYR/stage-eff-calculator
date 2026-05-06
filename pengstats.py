@@ -16,8 +16,6 @@ PENGUIN_COLUMNS = {
 def get_matrix():
     """Request and load drop matrix into memory"""
 
-    global matrix
-
     r = requests.get(PENGUIN_URL + "/result/matrix", params={"show_closed_zones": True})
     matrix = pd.DataFrame.from_records(
         r.json()["matrix"],
